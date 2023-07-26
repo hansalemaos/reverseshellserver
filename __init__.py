@@ -64,7 +64,8 @@ def do_actions(
             command_start=command_start,
             command_end=command_end,
         )
-        client_socket.send(cmd_encoded)
+        for datatosend in [cmd_encoded[i:i + byte_len] for i in range(0, len(cmd_encoded), byte_len)]:
+            client_socket.send(datatosend)
         response_from_client = b""
         while command_end not in response_from_client:
             response_from_client += client_socket.recv(byte_len)
